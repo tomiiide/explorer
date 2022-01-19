@@ -15,6 +15,30 @@
     "jsx": "preserve",
     "incremental": true
   },
+  "baseUrl": ".",
+  "paths": {
+    "@/components/*": [
+      "src/components/*"
+    ],
+    "@/hooks/*": [
+      "src/hooks/*"
+    ],
+    "@/contexts/*": [
+      "src/contexts/*"
+    ],
+    "@/utils/*": [
+      "src/utils/*"
+    ],
+    "@/models/*": [
+      "src/models/*"
+    ],
+    "@/typechain/*": [
+      "src/typechain/*"
+    ],
+    "@/constants/*": [
+      "src/constants/*"
+    ]
+  },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }
