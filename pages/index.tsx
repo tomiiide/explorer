@@ -1,9 +1,10 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
-import styles from "../styles/Home.module.css";
+import styles from "@/styles/pages/Index.module.css";
 import { DateTime } from "luxon";
 import { useQuery, gql } from "@apollo/client";
+import Nav from '@/components/Nav';
 
 const transferId = "";
 const account = "";
@@ -80,14 +81,16 @@ const Home: NextPage = () => {
   if (error) return <div> Error: {error}</div>;
 
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
         <title>Hop Explorer</title>
         <meta name="description" content="Hop protocol explorer" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>{}</main>
+      <main className={` ${styles.main} ${styles.circles_bg}`}>
+        <Nav />
+      </main>
     </div>
   );
 };
