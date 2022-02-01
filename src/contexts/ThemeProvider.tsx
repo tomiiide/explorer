@@ -6,11 +6,11 @@ interface Props {
   children: React.ReactNode;
 }
 
-export const ColorModeContext = React.createContext({
+export const ThemeContext = React.createContext({
   toggleColorMode: () => {},
 });
 
-export default function ToggleColorMode({ children }: Props) {
+export default function Theme({ children }: Props) {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   const defaultMode = prefersDarkMode ? "dark" : "light";
   const [mode, setMode] = React.useState<"light" | "dark">(defaultMode);
@@ -24,30 +24,37 @@ export default function ToggleColorMode({ children }: Props) {
     []
   );
 
-  const theme = React.useMemo(
+  const themeDefaults = React.useMemo(
     () =>
       createTheme({
         palette: {
           mode,
+          primary: {
+            main: "#b32eff",
+            contrastText: "#fff",
+          },
+          secondary: {
+            main: "#e185b3",
+          },
         },
         typography: {
-            fontFamily: [
-                '"Nunito"',
-                '-apple-system',
-                'BlinkMacSystemFont',
-                'Arial',
-                'sans-serif',
-                '"Apple Color Emoji"',
-                '"Segoe UI Emoji"',
-                '"Segoe UI Symbol"',
-              ].join(','),
-        }
+          fontFamily: [
+            '"Nunito"',
+            "-apple-system",
+            "BlinkMacSystemFont",
+            "Arial",
+            "sans-serif",
+            '"Apple Color Emoji"',
+            '"Segoe UI Emoji"',
+            '"Segoe UI Symbol"',
+          ].join(","),
+        },
       }),
     [mode]
   );
 
   React.useEffect(() => {
-      setMode(defaultMode);
+    setMode(defaultMode);
   }, [defaultMode]);
 
   React.useEffect(() => {
@@ -60,8 +67,8 @@ export default function ToggleColorMode({ children }: Props) {
   }, [mode]);
 
   return (
-    <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>{children}</ThemeProvider>
-    </ColorModeContext.Provider>
+    <ThemeContext.Provider value={colorMode}>
+      <ThemeProvider theme={themeDefaults}>{children}</ThemeProvider>
+    </ThemeContext.Provider>
   );
 }

@@ -9,7 +9,9 @@ import {
   gql,
 } from "@apollo/client";
 import * as React from 'react';
-import ColorModeProvider from '@/contexts/ColorMode';
+import ThemeProvider from '@/contexts/ThemeProvider';
+import { StyledEngineProvider } from '@mui/material/styles';
+
 
 
 
@@ -21,11 +23,13 @@ const client = new ApolloClient({
 function MyApp({ Component, pageProps }: AppProps) {
   
   return (
-    <ColorModeProvider>
+    <StyledEngineProvider injectFirst>
+    <ThemeProvider>
     <ApolloProvider client={client}>
       <Component {...pageProps} />
     </ApolloProvider>
-    </ColorModeProvider>
+    </ThemeProvider>
+    </StyledEngineProvider>
   );
 }
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { ColorModeContext } from "@/contexts/ColorMode";
+import { ThemeContext } from "@/contexts/ThemeProvider";
 import IconButton from "@mui/material/IconButton";
 import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
 import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
@@ -8,7 +8,7 @@ import styles from "@/styles/components/ColorModeToggle.module.css";
 
 const ColorModeToggle = () => {
   const theme = useTheme();
-  const { toggleColorMode } = React.useContext(ColorModeContext);
+  const { toggleColorMode } = React.useContext(ThemeContext);
   return (
     <IconButton onClick={toggleColorMode}>
       {theme.palette.mode === "light" ? (

@@ -1,5 +1,10 @@
 .nav {
     display: flex;
+    flex-direction: column;
+}
+
+.navWrapper {
+    display: flex;
     justify-content: space-between;
     align-items: center;
 }
@@ -10,4 +15,12 @@
 
 .toggle {
     width: 5%;
+}
+
+.backToHop {
+    display: flex;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+    align-content: center;
+    text-decoration-color: var(--text-color);
 }
