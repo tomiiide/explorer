@@ -5,6 +5,7 @@ import styles from "@/styles/pages/Index.module.css";
 import { DateTime } from "luxon";
 import { useQuery, gql } from "@apollo/client";
 import Nav from '@/components/Nav';
+import TransactionsTable from '@/components/TransactionsTable';
 
 const transferId = "";
 const account = "";
@@ -90,6 +91,7 @@ const Home: NextPage = () => {
 
       <main className={` ${styles.main} ${styles.circles_bg}`}>
         <Nav />
+        <TransactionsTable />
       </main>
     </div>
   );

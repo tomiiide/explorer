@@ -14,7 +14,7 @@
 }
 
 .circles_bg {
-  background-image: url("/circles-bg-dark.svg");
+  background-image: var(--circles-bg);
   background-repeat: no-repeat;
   background-size: cover;
 }

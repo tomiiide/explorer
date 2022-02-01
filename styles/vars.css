@@ -1,10 +1,16 @@
 :root {
   --bg-color: #FDF7F9;
   --text-color: #0F0524;
+  --tabler-header: #dddcdd;
+  --table-body: #e9e8e9;
+  --circles-bg: url("/circles-bg.svg");
 }
 
 [data-theme="dark"] {
   --bg-color: #272332;
   --text-color: #E3DDF1;
+  --tabler-header: #1E1B27;
+  --table-body: #302B3E;
+  --circles-bg: url("/circles-bg-dark.svg");
 }
 
