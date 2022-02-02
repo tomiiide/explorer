@@ -69,10 +69,10 @@ interface Column {
   }
   
   const rows = [
-    createData('2s ago', '0xdec6...9a21a7', "0xb3c2...6c81d7", "0xdec6...9a21a7", "0xdec6...9a21a7", "bonded"),
-    createData('2s ago', '0xdec6...9a21a7', "0xb3c2...6c81d7", "0xdec6...9a21a7", "0xdec6...9a21a7", "bonded"),
-    createData('2s ago', '0xdec6...9a21a7', "0xb3c2...6c81d7", "0xdec6...9a21a7", "0xdec6...9a21a7", "bonded"),
-    createData('2s ago', '0xdec6...9a21a7', "0xb3c2...6c81d7", "0xdec6...9a21a7", "0xdec6...9a21a7", "bonded"),
+    createData('2s ago', '0xdac6...9a21a7', "0xb3c2...6c81d7", "0xdec6...9a21a7", "0xdec6...9a21a7", "bonded"),
+    createData('2s ago', '0xdec3...9a21a7', "0xb3c2...6c81d7", "0xdec6...9a21a7", "0xdec6...9a21a7", "bonded"),
+    createData('2s ago', '0xdec4...9a21a7', "0xb3c2...6c81d7", "0xdec6...9a21a7", "0xdec6...9a21a7", "bonded"),
+    createData('2s ago', '0xdec5...9a21a7', "0xb3c2...6c81d7", "0xdec6...9a21a7", "0xdec6...9a21a7", "bonded"),
   ];
   
 
