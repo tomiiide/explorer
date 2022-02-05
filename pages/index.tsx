@@ -3,7 +3,6 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "@/styles/pages/Index.module.css";
 import { DateTime } from "luxon";
-import { useQuery, gql } from "@apollo/client";
 import Nav from "@/components/Nav";
 import TransactionsTable from "@/components/TransactionsTable";
 import { fetchAllChainTransactions } from "@/services/transactions";
@@ -14,11 +13,11 @@ const Home: NextPage = () => {
 
     async function fetchData() {
       const data = await fetchAllChainTransactions();
-      console.log(data);
+      console.log(data)
     }
 
     fetchData()
-  }, );
+  }, []);
 
   return (
     <div>
