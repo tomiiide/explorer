@@ -16,32 +16,8 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@/components/*": [
-        "src/components/*"
-      ],
-      "@/styles/*": [
-        "styles/*"
-      ],
-      "@/services/*": [
-        "src/services/*"
-      ],
-      "@/hooks/*": [
-        "src/hooks/*"
-      ],
-      "@/contexts/*": [
-        "src/contexts/*"
-      ],
-      "@/utils/*": [
-        "src/utils/*"
-      ],
-      "@/models/*": [
-        "src/models/*"
-      ],
-      "@/typechain/*": [
-        "src/typechain/*"
-      ],
-      "@/constants/*": [
-        "src/constants/*"
+      "@/*": [
+        "src/*"
       ]
     },
   },
