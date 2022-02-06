@@ -1,5 +1,7 @@
 export interface Transaction {
   amount: number;
+  bonder: string;
+  bondTransactionHash: string;
   bondTransactionHashTruncated: string;
   bondTxExplorerUrl: string;
   bonded: boolean;

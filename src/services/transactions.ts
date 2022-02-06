@@ -488,9 +488,7 @@ export async function fetchAllChainTransactions(
     account.length > 0
       ? allTransfers.map((transfer: any) => transfer.transferId)
       : transferId;
-  console.log("filterTransferIds", filterTransferIds);
-  console.log("transferId", transferId);
-  console.log(startTime, endTime);
+  
   // fetch all bonds and withdrawals
   const [
     gnosisBondedWithdrawals,
@@ -551,7 +549,6 @@ export async function fetchAllChainTransactions(
     arbitrum: arbitrumBonds,
     ethereum: mainnetBonds,
   };
-  console.log(bondsMap);
 
   for (const x of allTransfers) {
     const bonds = bondsMap[chainIdToSlugMap[x.destinationChain]];
@@ -560,7 +557,7 @@ export async function fetchAllChainTransactions(
         if (bond.transferId === x.transferId) {
           x.bonded = true;
           x.bonder = bond.from;
-          x.bondTransactionHash = bond.transactionHash;
+          x.bondTransactionHash = bond.transactionHash || "";
           x.bondedTimestamp = Number(bond.timestamp);
           continue;
         }
@@ -592,6 +589,7 @@ export async function fetchAllChainTransactions(
       x.index = i;
       return x;
     });
+    
   return refinedData;
 }
 
@@ -652,9 +650,6 @@ function populateTransfer(x, i) {
     ethers.utils.formatUnits(x.amount, decimals),
     x.token
   );
-  if (x.bonderFee === undefined) {
-    debugger;
-  }
 
   x.displayBonderFee = formatCurrency(
     ethers.utils.formatUnits(x.bonderFee, decimals),
