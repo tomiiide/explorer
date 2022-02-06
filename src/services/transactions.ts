@@ -2,7 +2,6 @@ import { DateTime } from "luxon";
 import { ethers } from "ethers";
 
 const enabledTokens = ["USDC", "USDT", "DAI", "MATIC", "ETH", "WBTC"];
-// const enabledChains = ["ethereum", "gnosis", "polygon", "arbitrum", "optimism"];
 const enabledChains = ["ethereum", "polygon", "arbitrum", "optimism", "gnosis"];
 
 const endpoints = {
@@ -142,7 +141,7 @@ export async function fetchTransfers(
   transferId?: string,
   account?: string
 ) {
-  const perPage = 10;
+  const perPage = 1000;
   const queryL1 = `
     query TransferSentToL2($perPage: Int, $startTime: Int, $endTime: Int, $skip: Int, $transferId: String, $account: String) {
       transferSents: transferSentToL2S(
@@ -262,17 +261,17 @@ export async function fetchTransfers(
       : []
   ).filter((x: any) => x);
 
-  // if (transfers.length === perPage) {
-  //   try {
-  //     transfers = transfers.concat(
-  //       ...(await fetchTransfers(chain, startTime, endTime, skip + perPage))
-  //     );
-  //   } catch (err: any) {
-  //     if (!err.message.includes("The `skip` argument must be between")) {
-  //       throw err;
-  //     }
-  //   }
-  // }
+  if (transfers.length === perPage) {
+    try {
+      transfers = transfers.concat(
+        ...(await fetchTransfers(chain, startTime, endTime, skip + perPage))
+      );
+    } catch (err: any) {
+      if (!err.message.includes("The `skip` argument must be between")) {
+        throw err;
+      }
+    }
+  }
 
   let data = transfers.map((transfer: any) => ({
     sourceChain: getChainId(chain),
