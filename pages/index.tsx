@@ -1,19 +1,21 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import styles from "@/styles/pages/Index.module.css";
-import { DateTime } from "luxon";
 import Nav from "@/components/Nav";
 import TransactionsTable from "@/components/TransactionsTable";
 import { fetchAllChainTransactions } from "@/services/transactions";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Transaction } from "@/types/transaction";
 
 const Home: NextPage = () => {
+
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+
   useEffect( () => {
 
     async function fetchData() {
-      const data = await fetchAllChainTransactions();
-      console.log(data)
+      const data = await fetchAllChainTransactions() as Transaction[];
+      setTransactions(data);
     }
 
     fetchData()
@@ -29,7 +31,7 @@ const Home: NextPage = () => {
 
       <main className={` ${styles.main} ${styles.circles_bg}`}>
         <Nav />
-        <TransactionsTable />
+        <TransactionsTable transactions={transactions} />
       </main>
     </div>
   );

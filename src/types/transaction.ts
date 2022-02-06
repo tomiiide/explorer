@@ -1,0 +1,31 @@
+export interface Transaction {
+  amount: number;
+  bondTransactionHashTruncated: string;
+  bondTxExplorerUrl: string;
+  bonded: boolean;
+  bonderFee: number;
+  bonderTruncated: string;
+  bonderUrl: string;
+  destinationChain: number;
+  destinationChainImageUrl: string;
+  destinationChainName: string;
+  destinationChainSlug: string;
+  displayAmount: number;
+  displayBonderFee: number;
+  formattedAmount: number;
+  index: number;
+  isoTimestamp: Date;
+  relativeTimestamp: string;
+  sourceChain: number;
+  sourceChainImageUrl: string;
+  sourceChainName: string;
+  sourceChainSlug: string;
+  sourceTxExplorerUrl: string;
+  timestamp: Date;
+  token: string;
+  tokenImageUrl: string;
+  transactionHash: string;
+  transactionHashTruncated: string;
+  transferId: string;
+  transferIdTruncated: string;
+}
