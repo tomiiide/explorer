@@ -10,12 +10,14 @@ import { Transaction } from "@/types/transaction";
 const Home: NextPage = () => {
 
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect( () => {
 
     async function fetchData() {
       const data = await fetchAllChainTransactions() as Transaction[];
       setTransactions(data);
+      setLoading(false);
     }
 
     fetchData()
@@ -31,7 +33,7 @@ const Home: NextPage = () => {
 
       <main className={` ${styles.main} ${styles.circles_bg}`}>
         <Nav />
-        <TransactionsTable transactions={transactions} />
+        <TransactionsTable transactions={transactions} loading={loading} />
       </main>
     </div>
   );

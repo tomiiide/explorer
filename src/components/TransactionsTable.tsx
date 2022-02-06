@@ -11,6 +11,9 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { Transaction } from "@/types/transaction";
 import TransactionTableRow from "@/components/TransactionTableRow";
+import { useTheme } from '@mui/system';
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 interface Column {
   id: "time" | "transaction_id" | "sender" | "receiver" | "bonder" | "status";
@@ -51,11 +54,14 @@ const columns: readonly Column[] = [
 
 const TransactionsTable = ({
   transactions,
+  loading,
 }: {
   transactions: Transaction[];
+  loading: boolean;
 }) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(100);
+  const theme = useTheme();
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -91,16 +97,30 @@ const TransactionsTable = ({
               </TableRow>
             </TableHead>
             <TableBody className={styles.tableBody}>
-              {transactions
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((transaction) => {
-                  return (
-                    <TransactionTableRow
-                      key={transaction.transferId}
-                      transaction={transaction}
+              {loading && (
+                <TableRow>
+                  <TableCell colSpan={6}>
+                    <Skeleton
+                      height={100}
+                      count={100}
+                      baseColor={theme.palette.background.default}
+                      highlightColor={ theme.palette.mode === 'dark' ? theme.palette.grey[800] :  theme.palette.grey[400]}
+                      duration={1.2}
                     />
-                  );
-                })}
+                  </TableCell>
+                </TableRow>
+              )}
+              {!loading &&
+                transactions
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((transaction) => {
+                    return (
+                      <TransactionTableRow
+                        key={transaction.transferId}
+                        transaction={transaction}
+                      />
+                    );
+                  })}
             </TableBody>
           </Table>
         </TableContainer>
