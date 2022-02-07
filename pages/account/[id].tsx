@@ -1,5 +1,5 @@
+import { useRouter } from "next/router";
 import type { NextPage } from "next";
-import { useRouter } from 'next/router'
 import Head from "next/head";
 import styles from "@/styles/pages/Index.module.css";
 import Nav from "@/components/Nav";
@@ -7,40 +7,53 @@ import TransactionsTable from "@/components/TransactionsTable";
 import { fetchAllChainTransactions } from "@/services/transactions";
 import { useEffect, useState } from "react";
 import { Transaction } from "@/types/transaction";
+import { isValidAddress, isValidTransactionId } from "@/utils/validation";
 
-const Home: NextPage = () => {
-  const router = useRouter()
+const AccountPage: NextPage = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
-  const [filterAccount, setFilterAccount] = useState("")
-  const [filterId, setFilterId] = useState("")
+  const [account, setAccount] = useState("");
+
+  const router = useRouter();
+
+  const { id } = router.query;
 
   const handleSearchUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    if (/^0x([A-Fa-f0-9]{64})$/.test(value)) {
-      router.push(`/transaction/${value.toLowerCase()}`)
+    if (isValidAddress(value)) {
+      setAccount(value.toLowerCase());
+      return;
     }
-    if (/^0x([A-Fa-f0-9]{40})$/.test(value)) {
-      router.push(`/account/${value.toLowerCase()}`)
-      return
+    if (isValidTransactionId(value)) {
+      router.push(`/transaction/${value.toLowerCase()}`);
+      return;
     }
-    setFilterAccount("");
-    setFilterId("");
-    setSearch(value);
+    router.push("/");
     return;
-  }
+  };
 
-  useEffect( () => {
+  useEffect(() => {
+    if (!router.isReady) return;
+    if (!id) {
+      router.push("/");
+    }
+
+    if (isValidAddress(id as string)) {
+      setAccount((id as string).toLowerCase());
+    }
+
     async function fetchData() {
       setLoading(true);
-      const data = await fetchAllChainTransactions(filterAccount, filterId) as Transaction[];
+      const data = (await fetchAllChainTransactions(
+        account
+      )) as Transaction[];
       setTransactions(data);
       setLoading(false);
     }
-
-    fetchData()
-  }, [filterAccount, filterId]);
+    if (account) {
+      fetchData();
+    }
+  }, [account, id, router]);
 
   return (
     <div>
@@ -51,11 +64,14 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={` ${styles.main} ${styles.circles_bg}`}>
-        <Nav handleSearch={handleSearchUpdate} currentSearch={search} />
+        <Nav
+          handleSearch={handleSearchUpdate}
+          currentSearch={(id as string) || ""}
+        />
         <TransactionsTable transactions={transactions} loading={loading} />
       </main>
     </div>
   );
 };
 
-export default Home;
+export default AccountPage;

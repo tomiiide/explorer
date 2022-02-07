@@ -8,10 +8,14 @@ import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import ColorModeToggle from "./ColorModeToggle";
 import { Link, Typography, useTheme } from "@mui/material";
 
-const Nav = ({ handleSearch }: { handleSearch?: (event: React.ChangeEvent<HTMLInputElement> ) => {} }) => {
-  const [search, setSearch] = useState("");
+const Nav = ({
+  handleSearch,
+  currentSearch,
+}: {
+  handleSearch?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  currentSearch?: string;
+}) => {
   const handleSearchInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(event.target.value);
     if (handleSearch) {
       handleSearch(event);
     }
@@ -42,7 +46,7 @@ const Nav = ({ handleSearch }: { handleSearch?: (event: React.ChangeEvent<HTMLIn
               </InputAdornment>
             }
             onChange={handleSearchInput}
-            value={search}
+            value={currentSearch}
             fullWidth
           />
         </div>
