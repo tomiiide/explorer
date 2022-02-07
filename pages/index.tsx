@@ -18,6 +18,7 @@ const Home: NextPage = () => {
 
   const handleSearchUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
+    setSearch(value);
     if (/^0x([A-Fa-f0-9]{64})$/.test(value)) {
       router.push(`/transaction/${value.toLowerCase()}`)
     }
@@ -27,7 +28,6 @@ const Home: NextPage = () => {
     }
     setFilterAccount("");
     setFilterId("");
-    setSearch(value);
     return;
   }
 

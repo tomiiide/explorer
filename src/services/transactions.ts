@@ -1,10 +1,13 @@
 import { DateTime } from "luxon";
 import { ethers } from "ethers";
+import { Transaction } from "@/types/transaction";
 
 const enabledTokens = ["USDC", "USDT", "DAI", "MATIC", "ETH", "WBTC"];
 const enabledChains = ["ethereum", "polygon", "arbitrum", "optimism", "gnosis"];
 
-const endpoints = {
+const endpoints: {
+  [chain: string]: string;
+} = {
   ethereum: "https://api.thegraph.com/subgraphs/name/hop-protocol/hop-mainnet",
   gnosis: "https://api.thegraph.com/subgraphs/name/hop-protocol/hop-xdai",
   polygon: "https://api.thegraph.com/subgraphs/name/hop-protocol/hop-polygon",
@@ -12,11 +15,11 @@ const endpoints = {
   optimism: "https://api.thegraph.com/subgraphs/name/hop-protocol/hop-optimism",
 };
 
-function getUrl(chain) {
+function getUrl(chain: string) {
   return endpoints[chain];
 }
 
-async function queryFetch(url, query, variables) {
+async function queryFetch(url: string, query: string, variables: {}) {
   const res = await fetch(url, {
     method: "POST",
     headers: {
@@ -59,7 +62,9 @@ const chainIdToSlugMap: any = {
   421611: "arbitrum",
 };
 
-const chainSlugToNameMap = {
+const chainSlugToNameMap: {
+  [chainSlug: string]: string;
+} = {
   ethereum: "Ethereum",
   gnosis: "Gnosis",
   polygon: "Polygon",
@@ -76,7 +81,9 @@ const colorsMap = {
   fallback: "#9f9fa3",
 };
 
-const chainLogosMap = {
+const chainLogosMap: {
+  [chain: string]: string;
+} = {
   ethereum:
     "https://s3.us-west-1.amazonaws.com/assets.hop.exchange/logos/ethereum.svg",
   gnosis:
@@ -89,7 +96,9 @@ const chainLogosMap = {
     "https://s3.us-west-1.amazonaws.com/assets.hop.exchange/logos/arbitrum.svg",
 };
 
-const tokenLogosMap = {
+const tokenLogosMap: {
+  [token: string]: string;
+} = {
   USDC: "https://s3.us-west-1.amazonaws.com/assets.hop.exchange/logos/usdc.svg",
   USDT: "https://s3.us-west-1.amazonaws.com/assets.hop.exchange/logos/usdt.svg",
   DAI: "https://s3.us-west-1.amazonaws.com/assets.hop.exchange/logos/dai.svg",
@@ -98,7 +107,9 @@ const tokenLogosMap = {
   ETH: "https://s3.us-west-1.amazonaws.com/assets.hop.exchange/logos/ethereum.svg",
 };
 
-const tokenDecimals = {
+const tokenDecimals: {
+  [token: string]: number;
+} = {
   USDC: 6,
   USDT: 6,
   DAI: 18,
@@ -106,7 +117,7 @@ const tokenDecimals = {
   ETH: 18,
 };
 
-function explorerLink(chain) {
+function explorerLink(chain: string) {
   let base = "";
   if (chain === "gnosis") {
     base = "https://blockscout.com/xdai/mainnet";
@@ -123,12 +134,12 @@ function explorerLink(chain) {
   return base;
 }
 
-function explorerLinkAddress(chain, address) {
+function explorerLinkAddress(chain: string, address: string) {
   const base = explorerLink(chain);
   return `${base}/address/${address}`;
 }
 
-function explorerLinkTx(chain, transactionHash) {
+function explorerLinkTx(chain: string, transactionHash: string) {
   const base = explorerLink(chain);
   return `${base}/tx/${transactionHash}`;
 }
@@ -465,7 +476,7 @@ export async function fetchAllChainTransactions(
       fetchTransfers(chain, startTime, endTime, 0, transferId, account)
     )
   );
-  const allTransfers = transfers.reduce((acc, cur) => acc.concat(cur), []);
+  const allTransfers = transfers.reduce((acc, cur) => acc.concat(cur), []) as Transaction[];
 
 
   startTime = allTransfers.length
@@ -594,7 +605,7 @@ export async function fetchAllChainTransactions(
   return refinedData;
 }
 
-function populateTransfer(x, i) {
+function populateTransfer(x: Transaction, i: number) {
   x.transactionHashTruncated = truncateHash(x.transactionHash);
 
   const transferTime = DateTime.fromSeconds(x.timestamp);
@@ -630,8 +641,8 @@ function populateTransfer(x, i) {
     const diff = bondedTime
       .diff(transferTime, ["days", "hours", "minutes"])
       .toObject();
-    let hours = Number(diff.hours.toFixed(0));
-    let minutes = Number(diff.minutes.toFixed(0));
+    let hours = Number(diff.hours?.toFixed(0));
+    let minutes = Number(diff.minutes?.toFixed(0));
     if (hours < 0) {
       hours = 0;
     }
@@ -661,15 +672,15 @@ function populateTransfer(x, i) {
   return x;
 }
 
-function truncateAddress(address) {
+function truncateAddress(address: string) {
   return truncateString(address, 4);
 }
 
-function truncateHash(hash) {
+function truncateHash(hash: string) {
   return truncateString(hash, 6);
 }
 
-function truncateString(str, splitNum) {
+function truncateString(str: string, splitNum: number) {
   if (!str) return "";
   return (
     str.substring(0, 2 + splitNum) +
@@ -678,7 +689,7 @@ function truncateString(str, splitNum) {
   );
 }
 
-function formatCurrency(value, token) {
+function formatCurrency(value: string, token: string) {
   const currencyFormatter = new Intl.NumberFormat("en-US", {
     // style: 'currency',
     // currency: 'USD'
@@ -688,5 +699,5 @@ function formatCurrency(value, token) {
     return Number(value || 0).toFixed(5);
   }
 
-  return `$${currencyFormatter.format(value)}`;
+  return `$${currencyFormatter.format(Number(value))}`;
 }
