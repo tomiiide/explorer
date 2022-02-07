@@ -605,6 +605,7 @@ export async function fetchAllChainTransactions(
   return refinedData;
 }
 
+
 function populateTransfer(x: Transaction, i: number) {
   x.transactionHashTruncated = truncateHash(x.transactionHash);
 
