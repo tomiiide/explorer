@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Image from "next/image";
 import styles from "@/styles/components/Nav.module.css";
 import SearchInput from "@mui/material/Input";
@@ -7,11 +8,18 @@ import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import ColorModeToggle from "./ColorModeToggle";
 import { Link, Typography, useTheme } from "@mui/material";
 
-const Nav = () => {
+const Nav = ({ handleSearch }: { handleSearch?: (event: React.ChangeEvent<HTMLInputElement> ) => {} }) => {
+  const [search, setSearch] = useState("");
+  const handleSearchInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+    if (handleSearch) {
+      handleSearch(event);
+    }
+  };
   const theme = useTheme();
   return (
     <nav className={styles.nav}>
-      <Link href="https://app.hop.exchange" className={styles.backToHop} >
+      <Link href="https://app.hop.exchange" className={styles.backToHop}>
         <ArrowBackRoundedIcon fontSize="small" />
         <Typography sx={{ fontWeight: "light", fontSize: ".8rem" }}>
           back to Hop.Exchange
@@ -33,6 +41,8 @@ const Nav = () => {
                 <SearchRoundedIcon />
               </InputAdornment>
             }
+            onChange={handleSearchInput}
+            value={search}
             fullWidth
           />
         </div>

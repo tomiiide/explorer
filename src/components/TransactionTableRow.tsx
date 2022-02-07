@@ -10,11 +10,11 @@ import Link from "@mui/material/Link";
 import Image from "next/image";
 import { Snackbar, IconButton, Alert } from "@mui/material";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import Slide, { SlideProps } from '@mui/material/Slide';
+import Slide, { SlideProps } from "@mui/material/Slide";
 
 const SlideTransition = (props: SlideProps) => {
-    return <Slide {...props} direction="left" />;
-  }
+  return <Slide {...props} direction="left" />;
+};
 
 const TransactionsTableRow = ({
   transaction,
@@ -84,7 +84,15 @@ const TransactionsTableRow = ({
 
       <TableCell align="left">
         <Box className={styles.transactionIdCell}>
-          <ContentCopyRoundedIcon fontSize="small" />
+          <ContentCopyRoundedIcon
+            fontSize="small"
+            onClick={() => {
+              copyToClipboard(
+                transaction.transferId,
+                transaction.transferIdTruncated
+              );
+            }}
+          />
           <Link
             href={transaction.sourceTxExplorerUrl}
             target="_blank"
@@ -144,14 +152,19 @@ const TransactionsTableRow = ({
       {/** Receiver Cell */}
       <TableCell align="left" className={styles.hasCellGap}>
         <Box className={styles.transactionIdCell}>
-          <ContentCopyRoundedIcon fontSize="small" onClick={() => {
+          <ContentCopyRoundedIcon
+            fontSize="small"
+            onClick={() => {
               copyToClipboard(
-                transaction.bondTransactionHashTruncated.length > 0 ? transaction.bondTransactionHash : transaction.transactionHash, 
                 transaction.bondTransactionHashTruncated.length > 0
-                ? transaction.bondTransactionHashTruncated
-                : transaction.transactionHashTruncated
+                  ? transaction.bondTransactionHash
+                  : transaction.transactionHash,
+                transaction.bondTransactionHashTruncated.length > 0
+                  ? transaction.bondTransactionHashTruncated
+                  : transaction.transactionHashTruncated
               );
-            }} />
+            }}
+          />
           <Link
             href={getDestinationTransactionUrl(transaction)}
             target="_blank"
@@ -195,13 +208,14 @@ const TransactionsTableRow = ({
         ) : (
           <>
             <Box className={styles.transactionIdCell}>
-              <ContentCopyRoundedIcon fontSize="small"
-              onClick={() => {
-                copyToClipboard(
-                  transaction.bonder,
-                  transaction.bonderTruncated
-                );
-              }}
+              <ContentCopyRoundedIcon
+                fontSize="small"
+                onClick={() => {
+                  copyToClipboard(
+                    transaction.bonder,
+                    transaction.bonderTruncated
+                  );
+                }}
               />
               <Link
                 href={transaction.bondTxExplorerUrl}
@@ -245,7 +259,7 @@ const TransactionsTableRow = ({
         onClose={handleClose}
         message={toastMessage}
         action={action}
-        anchorOrigin={{horizontal: "right", vertical: "top"}}
+        anchorOrigin={{ horizontal: "right", vertical: "top" }}
         TransitionComponent={SlideTransition}
       >
         <Alert onClose={handleClose} severity="success">

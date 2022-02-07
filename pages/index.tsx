@@ -11,17 +11,36 @@ const Home: NextPage = () => {
 
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
+  const [filterAccount, setFilterAccount] = useState("")
+  const [filterId, setFilterId] = useState("")
+
+  const handleSearchUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    if (/^0x([A-Fa-f0-9]{64})$/.test(value)) {
+      setFilterId(value.toLowerCase());
+      setFilterAccount("");
+      return
+    }
+    if (/^0x([A-Fa-f0-9]{40})$/.test(value)) {
+      setFilterAccount(value.toLowerCase());
+      setFilterId("");
+      return
+    }
+    setFilterAccount("");
+    setFilterId("");
+    return;
+  }
 
   useEffect( () => {
-
     async function fetchData() {
-      const data = await fetchAllChainTransactions() as Transaction[];
+      setLoading(true);
+      const data = await fetchAllChainTransactions(filterAccount, filterId) as Transaction[];
       setTransactions(data);
       setLoading(false);
     }
 
     fetchData()
-  }, []);
+  }, [filterAccount, filterId]);
 
   return (
     <div>
@@ -32,7 +51,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={` ${styles.main} ${styles.circles_bg}`}>
-        <Nav />
+        <Nav handleSearch={handleSearchUpdate} />
         <TransactionsTable transactions={transactions} loading={loading} />
       </main>
     </div>
