@@ -141,8 +141,6 @@ export async function fetchTransfers(
   transferId?: string,
   account?: string
 ) {
-  console.log(transferId)
-  console.log(account)
   const perPage = 1000;
   const queryL1 = `
     query TransferSentToL2($perPage: Int, $startTime: Int, $endTime: Int, $skip: Int, $transferId: String, $account: String) {
@@ -452,7 +450,6 @@ export async function fetchAllChainTransactions(
   account: string = "",
   transferId: string = ""
 ) {
-  console.log(account, transferId);
   const currentDate = DateTime.now().toFormat("yyyy-MM-dd");
   const endDate = DateTime.fromFormat(currentDate, "yyyy-MM-dd")
     .endOf("day")
@@ -470,7 +467,6 @@ export async function fetchAllChainTransactions(
   );
   const allTransfers = transfers.reduce((acc, cur) => acc.concat(cur), []);
 
-  console.log(allTransfers)
 
   startTime = allTransfers.length
     ? allTransfers[allTransfers.length - 1].timestamp
